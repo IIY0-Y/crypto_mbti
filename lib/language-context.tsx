@@ -14,9 +14,11 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("zh");
+  const [mounted, setMounted] = useState(false);
 
   // Load from local storage if available
   useEffect(() => {
+    setMounted(true);
     const saved = localStorage.getItem("app-language") as Language;
     if (saved && (saved === "zh" || saved === "en")) {
       setLanguage(saved);
@@ -29,6 +31,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   const t = (zh: string, en: string) => {
+    // During SSR or before hydration, always return zh
+    if (!mounted) return zh;
     return language === "zh" ? zh : en;
   };
 

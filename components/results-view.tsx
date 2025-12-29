@@ -30,7 +30,11 @@ export function ResultsView({ personality, code, scores }: ResultsViewProps) {
                 <Target className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                 <h1 className="text-2xl font-bold mb-4">{t("未找到人格类型", "Type Not Found")}</h1>
                 <p className="text-muted-foreground mb-6">{t(`未找到代码为 "${code}" 的人格类型。`, `We couldn't find a personality type matching code "${code}".`)}</p>
-                <Link href="/test"><Button className="w-full">{t("重新测评", "Retake Test")}</Button></Link>
+                <Link href="/test" className="w-full">
+                    <div className="w-full h-11 bg-[#6366f1] text-white hover:bg-[#4f46e5] rounded-lg flex items-center justify-center font-medium transition-colors">
+                        {t("重新测评", "Retake Test")}
+                    </div>
+                </Link>
             </Card>
         </div>
     );
@@ -255,15 +259,11 @@ export function ResultsView({ personality, code, scores }: ResultsViewProps) {
  
         {/* 5. Footer Actions */}
         <div className="flex flex-wrap justify-center gap-6 py-12">
-            <Link href="/">
-                <Button variant="outline" size="xl" className="rounded-full px-8">
-                    <ArrowLeft className="mr-2 h-5 w-5" /> 返回首页
-                </Button>
+            <Link href="/" className="h-16 px-8 rounded-full border border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex items-center justify-center font-medium transition-colors">
+                <ArrowLeft className="mr-2 h-5 w-5" /> {t("返回首页", "Home")}
             </Link>
-            <Link href="/types">
-                <Button variant="secondary" size="xl" className="rounded-full px-8">
-                     发现所有 人格
-                </Button>
+            <Link href="/types" className="h-16 px-8 rounded-full bg-secondary text-secondary-foreground hover:bg-secondary/80 inline-flex items-center justify-center font-medium transition-colors">
+                 {t("发现所有 人格", "View All Types")}
             </Link>
             <Button variant="glow" size="xl" className="rounded-full px-8 bg-indigo-600 text-white" onClick={() => {
                 navigator.clipboard.writeText(window.location.href);

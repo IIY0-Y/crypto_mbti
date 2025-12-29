@@ -38,10 +38,8 @@ export default function Home() {
             <Link href="#" className="hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors">设计哲学</Link>
         </div>
         <div className="flex items-center gap-4">
-            <Link href="/test">
-                <Button size="sm" variant="ghost" className="font-semibold text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 hidden sm:flex">
-                    重新测评
-                </Button>
+            <Link href="/test" className="font-semibold text-indigo-500 hover:text-indigo-600 hover:bg-indigo-500/10 hidden sm:flex h-9 px-3 text-xs items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring select-none">
+                重新测评
             </Link>
             <Button 
                 size="sm" 
@@ -86,15 +84,17 @@ export default function Home() {
             </motion.p>
 
             <motion.div variants={fadeInUp} className="pt-6 md:pt-8 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
-                <Link href="/test" className="w-full sm:w-auto">
-                    <Button size="xl" className="w-full h-16 md:h-18 px-8 md:px-12 rounded-full text-lg md:text-xl shadow-2xl shadow-indigo-500/40 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 dark:shadow-indigo-900/60 transition-all hover:scale-105 active:scale-95 border-0">
-                        {t("立即开始免费分析", "Start Free Analysis")} <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
-                    </Button>
+                <Link 
+                    href="/test" 
+                    className="w-full sm:w-auto h-16 md:h-18 px-8 md:px-12 rounded-full text-lg md:text-xl shadow-2xl shadow-indigo-500/40 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 dark:shadow-indigo-900/60 transition-all hover:scale-105 active:scale-95 border-0 inline-flex items-center justify-center font-bold text-white"
+                >
+                    {t("立即开始免费分析", "Start Free Analysis")} <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
                 </Link>
-                <Link href="/types" className="w-full sm:w-auto">
-                     <Button size="xl" variant="outline" className="w-full h-16 md:h-18 px-8 md:px-12 rounded-full text-lg md:text-xl border-2 hover:bg-slate-50 dark:hover:bg-white/5 backdrop-blur-sm">
-                        浏览 16 种人格
-                     </Button>
+                <Link 
+                    href="/types" 
+                    className="w-full sm:w-auto h-16 md:h-18 px-8 md:px-12 rounded-full text-lg md:text-xl border-2 hover:bg-slate-50 dark:hover:bg-white/5 backdrop-blur-sm inline-flex items-center justify-center font-medium transition-colors"
+                >
+                    {t("浏览 16 种人格", "Types View")}
                 </Link>
             </motion.div>
             
