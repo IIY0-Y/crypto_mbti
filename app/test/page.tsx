@@ -33,35 +33,53 @@ export default function TestPage() {
   const router = useRouter();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
-  const [direction, setDirection] = useState(1); 
+  const [direction, setDirection] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const question = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex) / questions.length) * 100;
 
   const handleAnswer = (value: number) => {
-    setAnswers((prev) => ({ ...prev, [question.id]: value }));
+    if (isTransitioning) return;
+    
+    // Immediately record the answer
+    const newAnswers = { ...answers, [question.id]: value };
+    setAnswers(newAnswers);
+    setIsTransitioning(true);
+
     setTimeout(() => {
-      handleNext();
-    }, 250);
+      if (currentQuestionIndex < questions.length - 1) {
+        setDirection(1);
+        setCurrentQuestionIndex((prev) => prev + 1);
+        setIsTransitioning(false);
+      } else {
+        finishTest(newAnswers);
+      }
+    }, 400); // Slightly longer for smoother feel and better guard
   };
 
   const handleNext = () => {
+    if (isTransitioning) return;
+    if (answers[question.id] === undefined) return;
+    
     if (currentQuestionIndex < questions.length - 1) {
       setDirection(1);
       setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      finishTest();
+      finishTest(answers);
     }
   };
 
   const handleBack = () => {
+    if (isTransitioning) return;
     if (currentQuestionIndex > 0) {
       setDirection(-1);
       setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
 
-  const finishTest = () => {
+  const finishTest = (finalAnswers: Record<number, number>) => {
+    setIsTransitioning(true);
     let scores: Record<Dimension, number> = {
       Time: 0,
       Risk: 0,
@@ -70,7 +88,7 @@ export default function TestPage() {
     };
 
     questions.forEach((q) => {
-      const ans = answers[q.id] || 0;
+      const ans = finalAnswers[q.id] || 0;
       const multiplier = q.isReverse ? -1 : 1;
       scores[q.dimension] += (ans * multiplier);
     });
@@ -155,16 +173,18 @@ export default function TestPage() {
                                         <button
                                             key={scale.value}
                                             onClick={() => handleAnswer(scale.value)}
+                                            disabled={isTransitioning}
                                             className={cn_local(
-                                                "rounded-full transition-all duration-300 flex items-center justify-center border-2 group relative",
-                                                scale.size,
-                                                scale.color,
-                                                isSelected 
-                                                    ? "ring-4 ring-white/20 ring-offset-4 ring-offset-[#0f1016] opacity-100 bg-opacity-100 scale-110 shadow-2xl" 
-                                                    : "bg-transparent opacity-40 hover:opacity-100 hover:scale-110 shadow-lg shadow-black/20"
-                                            )}
-                                            aria-label={scale.label}
-                                        >
+                                                 "rounded-full transition-all duration-300 flex items-center justify-center border-2 group relative",
+                                                 scale.size,
+                                                 scale.color,
+                                                 isSelected 
+                                                     ? "ring-4 ring-white/20 ring-offset-4 ring-offset-[#0f1016] opacity-100 bg-opacity-100 scale-110 shadow-2xl" 
+                                                     : "bg-transparent opacity-40 hover:opacity-100 hover:scale-110 shadow-lg shadow-black/20",
+                                                 isTransitioning && "cursor-not-allowed"
+                                             )}
+                                             aria-label={scale.label}
+                                         >
                                             <div className={cn_local(
                                                 "absolute inset-0 rounded-full opacity-0 group-hover:opacity-10 transition-opacity",
                                                 isSelected ? "opacity-20" : ""
@@ -184,7 +204,7 @@ export default function TestPage() {
                 variant="ghost" 
                 size="lg"
                 onClick={handleBack} 
-                disabled={currentQuestionIndex === 0}
+                disabled={currentQuestionIndex === 0 || isTransitioning}
                 className="text-slate-500 hover:text-white hover:bg-white/5 rounded-full px-8 h-14"
             >
                 <ArrowLeft className="mr-3 h-5 w-5" /> 上一题
@@ -194,7 +214,7 @@ export default function TestPage() {
                 variant={answers[question.id] !== undefined ? "glow" : "secondary"}
                 size="lg"
                 onClick={handleNext}
-                disabled={answers[question.id] === undefined}
+                disabled={answers[question.id] === undefined || isTransitioning}
                 className="h-14 px-12 rounded-full font-bold text-lg min-w-[160px]"
             >
                  {currentQuestionIndex === questions.length - 1 ? "完成测评" : "下一题"}
