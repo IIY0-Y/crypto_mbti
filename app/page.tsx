@@ -30,7 +30,7 @@ export default function Home() {
                 <Brain className="w-6 h-6" />
              </div>
              <span className="bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
-                Crypto MBTI
+                Crypto MBTI | Web3 Personality Test
              </span>
         </div>
         <div className="hidden md:flex gap-8 text-sm font-medium text-slate-500 dark:text-slate-400">
