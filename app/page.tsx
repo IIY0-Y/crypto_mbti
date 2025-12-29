@@ -72,7 +72,7 @@ export default function Home() {
             </motion.div>
 
             <motion.h1 variants={fadeInUp} className="text-4xl sm:text-6xl md:text-[7rem] font-black tracking-tighter leading-[1] md:leading-[0.85] py-4">
-                {t("谁是加密", "Who Rules")} <br className="hidden md:block"/>
+                {t("WHO谁是加密", "Who Rules")} <br className="hidden md:block"/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 animate-gradient-x">
                     {t("黑暗森林", "Dark Forest")} 
                 </span>
